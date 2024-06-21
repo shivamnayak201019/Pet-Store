@@ -1,0 +1,325 @@
+{%extends 'nav.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {%block myblock%}
+    <h1>welcome: {{session}}</h1>
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+    
+        <script>
+            var amount= {{totalbill}}
+         function initPayPalButton() {
+            document.getElementById("paypapl").style.visibility ="hidden";
+    paypal.Buttons({
+    
+      style: {
+    
+        shape: 'rect',
+    
+        color: 'gold',
+    
+        layout: 'vertical',
+    
+        label: 'paypal',
+    
+       
+    
+      },
+    
+    
+    
+      createOrder: function(data, actions) {
+    
+        return actions.order.create({
+    
+          purchase_units: [{"amount":{"currency_code":"USD","value":amount}}]
+    
+        });
+    
+      },
+    
+    
+    
+      onApprove: function(data, actions) {
+    
+        return actions.order.capture().then(function(orderData) {
+    
+         console.log(orderData)
+    
+          // Full available details
+    
+          console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                      var data = orderData['id']
+            //           var f = document.createElement('form');
+            // f.action='http://localhost:8000/paymentsucess/';
+            // f.method='GET';
+            // f.target='_blank';
+
+            // var i=document.createElement('input');
+            // i.type='hidden';
+            // i.name='fragment';
+            // i.value=orderData['id'];
+            // f.appendChild(i);
+
+            // document.body.appendChild(f);
+
+            // f.submit();
+            odata = {{orderobj.ordernumber}};
+         window.location.replace("paymentsucess/"+data+"/"+odata+"/");
+          
+    
+     
+    
+         
+    
+    
+         
+    
+        });
+    
+      },
+    
+    
+    
+      onError: function(err) {
+    
+        console.log(err);
+    
+      }
+    
+    }).render('#paypal-button-container');
+    
+    }
+    
+    
+    
+    </script>
+
+    
+    <section class="h-100 h-custom" style="background-color: #eee;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+              <div class="card">
+                <div class="card-body p-4">
+      
+                  <div class="row">
+      
+                    <div class="col-lg-7">
+                      <h5 class="mb-3"><a href="#!" class="text-body"><i
+                            class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
+                      <hr>
+      
+                      <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                          <p class="mb-1">Shopping cart</p>
+                          <p class="mb-0">You have {{totaldogs}}items in your cart</p>
+                        </div>
+                        <div>
+                          <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!"
+                              class="text-body">price <i class="fas fa-angle-down mt-1"></i></a></p>
+                        </div>
+                      </div>
+                      {%for i in cartobj%}
+      
+                      <div class="card mb-3">
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                              <div>
+                                <img
+                                  src="{{i.Pid.image.url}}"
+                                  class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
+                              </div>
+                              <div class="ms-3">
+                                <h5>{{i.Pid.name}}</h5>
+                                <p class="large mb-0">{{i.Pid.age}}</p>
+                              </div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                              <div style="width: 50px;">
+                                <h5 class="fw-normal mb-0">{{i.Pid.breed}}</h5>
+                              </div>
+                              <div style="width: 80px;">
+                                <h5 class="mb-0">{{i.quantity}}</h5>
+                                <h5 class="mb-0">{{i.totalamount}}</h5>
+                              </div>
+                              <a href="#!" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+      
+                      {%endfor%}
+                      
+      
+                      
+      
+                      
+      
+                    </div>
+                    
+                    <div class="col-lg-5">
+      
+                      <div class="card bg-primary text-white rounded-3">
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Card details</h5>
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                              class="img-fluid rounded-3" style="width: 45px;" alt="Avatar">
+                          </div>
+      
+                          <p class="small mb-2">Card type</p>
+                          <a href="#!" type="submit" class="text-white"><i
+                              class="fab fa-cc-mastercard fa-2x me-2"></i></a>
+                          <a href="#!" type="submit" class="text-white"><i
+                              class="fab fa-cc-visa fa-2x me-2"></i></a>
+                          <a href="#!" type="submit" class="text-white"><i
+                              class="fab fa-cc-amex fa-2x me-2"></i></a>
+                          <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
+      
+                        
+                            <div data-mdb-input-init class="form-outline form-white mb-4">
+                              <h6>Name: {{orderobj.firstname}}  {{orderobj.lastname}}</h6>
+                              
+                            </div>
+      
+                            <!-- <div data-mdb-input-init class="form-outline form-white mb-4">
+                                
+                            </div> -->
+
+                            <div data-mdb-input-init class="form-outline form-white mb-4">
+                                <h6>{{orderobj.address}}</h6>
+                            </div>
+
+                           
+      
+                            <div class="row mb-4">
+                              <div class="col-md-6">
+                                <div data-mdb-input-init class="form-outline form-white">
+                                    <h6>{{orderobj.city}}</h6>
+                                </div>
+                                
+                              </div>
+                              <div class="col-md-6">
+                                <div data-mdb-input-init class="form-outline form-white">
+                                    <h6>{{orderobj.state}}</h6>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row mb-4">
+                              <div class="col-md-6">
+                                <div data-mdb-input-init class="form-outline form-white">
+                                    <h6>{{orderobj.phoneno}}</h6>
+                                </div>
+                                
+                              </div>
+                              <div class="col-md-6">
+                                <div data-mdb-input-init class="form-outline form-white">
+                                    <h6>{{orderobj.pincode}}</h6>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                  <div data-mdb-input-init class="form-outline form-white">
+                                      <h6>{{orderobj.orderdate}}</h6>
+                                  </div>
+                                  
+                                </div>
+                                <div class="col-md-6">
+                                  <div data-mdb-input-init class="form-outline form-white">
+                                      <h6>{{orderobj.orderstatus}}</h6>
+                                  </div>
+                                </div>
+                            </div>
+
+                         
+
+                              <div data-mdb-input-init class="form-outline form-white mb-4">
+                                <h6>{{totalbill}}</h6>
+                              </div>
+
+
+    
+      
+                          <!-- </form> -->
+      
+                          <hr class="my-4">
+      
+                          
+      
+                          <div class="d-flex justify-content-between mb-4">
+                            <p class="mb-2">Total(Incl. taxes)</p>
+                            <p class="mb-2">Rs. {{totalbill}}</p>
+                          </div>
+      
+                          <div class="sale my-3"> <div id="paypal-button-container"></div> </div>
+                 
+                  <button onclick="initPayPalButton()" name="paypapl" id="paypapl">Do payment</button>
+
+                  <!-- ============================================rayzor pay====================== -->
+              
+                        
+                  <div class="btn_container">
+                    <!-- Payment Button -->
+                    <button class="btn btn-danger" id="pay-btn">Pay using Razor Pay</button>
+                  </div>
+                
+             
+               
+              <!-- Razorpay's Javascript code. -->
+              <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+              <script>
+                var options = {
+                   
+                  // Enter the Key ID generated from the Dashboard
+                  key: "rzp_test_yRr9LZrct7IUWL", 
+                  amount: 101, 
+                  currency: "INR",
+                  name: "Pet Store", 
+                   
+                  // Pass the `id` obtained
+                   
+                  "handler": function(response) {
+  console.log("success");
+  
+
+  window.location.href = `http://localhost:8000/paymentsuccess?session={{session}}&order_id={{orderobj.ordernumber}}&payment_id=${response.razorpay_payment_id}`
+                  }
+                };
+                 
+                // initialise razorpay with the options.
+                var rzp1 = new Razorpay(options);
+                 
+                // add event listener to the payment button.
+                document.getElementById("pay-btn").onclick = function (e) {
+                  rzp1.open();
+                  e.preventDefault();
+                };
+              </script>
+                 <!-- ==============================================end=================== -->
+      
+                        </div>
+                      </div>
+      
+                    </div>
+      
+                  </div>
+      
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {%endblock%}
+</body>
+</html>

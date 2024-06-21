@@ -1,0 +1,69 @@
+{%extends 'nav.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {%block myblock%}
+    <section class="h-100h-custom" style="background-color: #eee;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center"style="height:300px">
+            
+       
+               
+                
+      
+                      <div class="card bg-primary text-white rounded-3 text-center justify-content-center align-items-center " style="width:18rem;height:300px">
+                       
+                  
+                              <div data-mdb-input-init class="form-outline form-white mb-4">
+                                Thank You for Visiting: {{paymentobj.customerid.name}}
+                              </div>
+                            
+                              <div data-mdb-input-init class="form-outline form-white mb-4">
+                                  your order id: {{paymentobj.oid.ordernumber}}
+                              </div>
+
+                              <div data-mdb-input-init class="form-outline form-white mb-4">
+                                  {{paymentobj.paymentstatus}}
+                              </div>
+                          
+                        
+                          
+      
+
+                            <!-- <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-block btn-lg">
+                              <div class="d-flex justify-content-between">
+                                <span>Rs. {{totalbill}}</span>
+                                <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                              </div>
+                            </button> -->
+                      
+      
+              
+                          <hr class="my-4">
+      
+                          
+      
+      
+                         
+      
+                       
+                     
+      
+                    
+      
+                
+      
+             
+              
+            </div>
+          </div>
+        </div>
+      </section>
+      {%endblock%}
+</body>
+</html>
